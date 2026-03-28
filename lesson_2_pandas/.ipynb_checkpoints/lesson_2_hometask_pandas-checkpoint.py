@@ -33,7 +33,7 @@ def answer_one():
     })
 
     GDP = pd.read_csv("./world_bank.csv",skiprows=4)
-    GDP['Country Name'] = GDP['Country Name'].replace({
+    GDP['Country'] = energy['Country'].replace({
         'Korea, Rep.': 'South Korea',
         'Iran, Islamic Rep.': 'Iran',
         'Hong Kong SAR, China': 'Hong Kong'
@@ -42,8 +42,8 @@ def answer_one():
     ScimEn = pd.read_excel("./ScimEn.xlsx")
     ScimEn = ScimEn[ScimEn['Rank'] <= 15]
     
-    together = pd.merge(ScimEn, energy, how='inner', on='Country')
-    together = pd.merge(together, GDP, how='inner', left_on='Country', right_on='Country Name')
+    together = pd.merge(energy, GDP, how='inner', left_on='Country', right_on='Country Name')
+    together = pd.merge(ScimEn, together, how='inner', left_on='Country', right_on='Country Name')
     together = together.set_index('Country')
 
     together = together[['Rank', 'Documents', 'Citable documents', 'Citations', 
@@ -75,10 +75,10 @@ def answer_three():
     sixth_ct = avgGDP.index[5]
     sixth_row = top15.loc[sixth_ct]
     diff = sixth_row['2015'] - sixth_row['2006']
-    return float(diff)
+    print diff
 
 answer_three()
-
+    
 # %%
 
 def answer_four():
@@ -109,7 +109,7 @@ def answer_six():
     corr = top15['Citable docs per Capita'].corr(top15['Energy Supply per Capita'])
     return float(corr)
 answer_six()
-
+    
 # %%
 
 def answer_seven():
