@@ -24,11 +24,11 @@ def answer_one():
     energy = energy.replace("...", np.nan)
     energy['Energy Supply'] = energy['Energy Supply'] * 1000000
     energy['Country'] = energy['Country'].str.replace(r'\d+', '', regex=True)
-    energy['Country'] = energy['Country'].str.replace(r'\(.*\)', '' ,regex=True)
+    energy['Country'] = energy['Country'].str.replace(r'\(.*\)', '' ,regex=True).str.strip()
     energy['Country'] = energy['Country'].replace({
         'Republic of Korea': 'South Korea', 
         'United States of America': 'United States',
-        'United Kingdom of Great Britain Northern Ireland': 'United Kingdom',
+        'United Kingdom of Great Britain and Northern Ireland': 'United Kingdom',
         'China, Hong Kong Special Administrative Region': 'Hong Kong'
     })
 
@@ -56,7 +56,6 @@ def answer_one():
 
 answer_one()
 
-
 # %%
 def answer_two():
     top15 = answer_one()
@@ -74,7 +73,7 @@ def answer_three():
     avgGDP = avgGDP.sort_values(ascending=False)
     sixth_ct = avgGDP.index[5]
     sixth_row = top15.loc[sixth_ct]
-    diff = sixth_row['2015'] - sixth_row['2006']
+    diff = sixth_row['2015']/sixth_row['2006']
     return float(diff)
 
 answer_three()
